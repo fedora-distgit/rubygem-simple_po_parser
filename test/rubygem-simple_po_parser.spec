@@ -10,8 +10,6 @@ URL: http://github.com/experteer/simple_po_parser
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
-BuildRequires: rubygem(rspec)
-BuildRequires: rubygem(simplecov)
 BuildRequires: ruby
 BuildArch: noarch
 
@@ -45,29 +43,25 @@ cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 
+
 %check
 pushd .%{gem_instdir}
-
-sed -i \
-    -e '/require..coveralls./ s/^/#/g' \
-    -e '/require..awesome_print./ s/^/#/g' \
-    -e 's/Coveralls::SimpleCov::Formatter//g' \
-    ./spec/spec_helper.rb
-
 # Run the test suite.
-LC_ALL=C.UTF-8 rspec spec ||:
 popd
 
 %files
 %dir %{gem_instdir}
+%{gem_instdir}/.gitattributes
+%exclude %{gem_instdir}/.gitignore
+%exclude %{gem_instdir}/.travis.yml
 %license %{gem_instdir}/LICENSE.txt
 %{gem_libdir}
 %exclude %{gem_cache}
 %{gem_spec}
-%exclude %{gem_instdir}/.*
 
 %files doc
 %doc %{gem_docdir}
+%exclude %{gem_instdir}/.rspec
 %doc %{gem_instdir}/CHANGELOG.md
 %{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.md
