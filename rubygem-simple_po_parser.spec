@@ -1,6 +1,8 @@
 # Generated from simple_po_parser-1.1.6.gem by gem2rpm -*- rpm-spec -*-
 %global gem_name simple_po_parser
 
+%bcond_without bootstrap
+
 Name: rubygem-%{gem_name}
 Version: 1.1.6
 Release: 1%{?dist}
@@ -10,8 +12,10 @@ URL: http://github.com/experteer/simple_po_parser
 Source0: https://rubygems.org/gems/%{gem_name}-%{version}.gem
 BuildRequires: ruby(release)
 BuildRequires: rubygems-devel
+%if %{without bootstrap}
 BuildRequires: rubygem(rspec)
 BuildRequires: rubygem(simplecov)
+%endif
 BuildRequires: ruby
 BuildArch: noarch
 
@@ -45,6 +49,7 @@ cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
 
+%if %{without bootstrap}
 %check
 pushd .%{gem_instdir}
 
@@ -57,6 +62,7 @@ sed -i \
 # Run the test suite.
 LC_ALL=C.UTF-8 rspec spec ||:
 popd
+%endif
 
 %files
 %dir %{gem_instdir}
